@@ -1,0 +1,22 @@
+{
+  "name": "SVG-in-3D-animation",
+  "version": "1.0.0",
+  "description": "SVG-in-3D-animation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlekseyDevksh/SVG-in-3D.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlekseyDevksh/SVG-in-3D/issues"
+  },
+  "homepage": "https://github.com/AlekseyDevksh/SVG-in-3D#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}

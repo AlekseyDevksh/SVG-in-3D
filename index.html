@@ -81,8 +81,12 @@
       return shuffle(fillUp(imageCoords, 1500));
     }
 
-    let images = ['img/place.svg', 'img/arrow.svg', 'img/close.svg'];
+    let images = ['img/macys.svg', 'img/tinder.svg', 'img/gitlab.svg'];
+
     loadImages(images, function(loadedImages) {
+
+      var randomColorBG = new THREE.Color(Math.random(), Math.random(), Math.random());
+      var randomColor = new THREE.Color(Math.random(), Math.random(), Math.random());
 
       var gallery = [];
       loadedImages.forEach(function(el, index) {
@@ -97,7 +101,7 @@
         camera.position.z = 500;
 
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xcccccc);
+        scene.background = randomColorBG;
 
         renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -107,29 +111,17 @@
         var container = document.getElementById('container');
         container.appendChild(renderer.domElement);
 
-        var texture = (new THREE.TextureLoader).load("img/particle.png");
         var material = new THREE.PointCloudMaterial({
           size: 5,
           vertexColors: THREE.VertexColors,
-          map: texture,
           alphaTest: 0.5
         });
 
         geometry = new THREE.Geometry();
-        var x, y, z;
-        //
-        // for (var i = 0; i <= 100; i++) {
-        //   x = Math.sin(i / 10) * 100;
-        //   y = 0;
-        //   z = i * 10;
-        //
-        //   geometry.vertices.push(new THREE.Vector3(x, y, z));
-        //   geometry.colors.push(new THREE.Color(Math.random(), Math.random(), Math.random()));
-        // };
 
         gallery[0].forEach((el, index) => {
           geometry.vertices.push(new THREE.Vector3(el[0], el[1], Math.random() * 100));
-          geometry.colors.push(new THREE.Color(Math.random(), Math.random(), Math.random()));
+          geometry.colors.push(randomColor);
         })
 
         var pointCloud = new THREE.PointCloud(geometry, material);
@@ -153,9 +145,9 @@
 
         geometry.vertices.forEach(function(particle, index) {
           var dX, dY, dZ;
-          dX = Math.sin(i / 10 + index / 2) * 1;
-          dy = 0;
-          dz = 0;
+          dX = 0;
+          dY = 0;
+          dZ = Math.sin(i / 8 + index / 2) * 1;
           particle.add(new THREE.Vector3(dX, dY, dZ));
         });
         geometry.verticesNeedUpdate = true;
@@ -175,10 +167,17 @@
       document.body.addEventListener('click', function () {
         current++;
         current = current % gallery.length;
+
+        scene.background = new THREE.Color(Math.random(), Math.random(), Math.random());
+
+
         geometry.vertices.forEach(function(particle, index) {
           let tl = new TimelineMax();
           tl.to(particle, 1,{x:gallery[current][index][0], y:gallery[current][index][1]});
+
         });
+
+
       });
     })
   </script>

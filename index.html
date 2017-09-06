@@ -97,9 +97,10 @@
 
         var HEIGHT,
             WIDTH,
-            geometry,
+            current = 0,
             mouseX = 0,
             mouseY = 0,
+            material = [],
             windowHalfX,
             windowHalfY;
 
@@ -124,7 +125,7 @@
             var container = document.getElementById('container');
             container.appendChild(renderer.domElement);
 
-            var material = new THREE.PointCloudMaterial({
+            material = new THREE.PointCloudMaterial({
                 size: 5,
                 vertexColors: THREE.VertexColors,
                 alphaTest: 0.5
@@ -134,8 +135,8 @@
 
             gallery[0].forEach((el, index) => {
                 geometry.vertices.push(new THREE.Vector3(el[0], el[1], Math.random() * 100));
-            geometry.colors.push(randomColor);
-        })
+                geometry.colors.push(randomColor);
+            })
 
             var pointCloud = new THREE.PointCloud(geometry, material);
             scene.add(pointCloud);
@@ -146,38 +147,7 @@
             document.addEventListener('touchmove', onDocumentTouchMove, false);
         }
 
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
 
-        function onDocumentMouseMove(e) {
-            mouseX = e.clientX - windowHalfX;
-            mouseY = e.clientY - windowHalfY;
-        }
-
-        /*	Mobile users?  I got your back homey	*/
-
-        function onDocumentTouchStart(e) {
-
-            if (e.touches.length === 1) {
-
-                e.preventDefault();
-                mouseX = e.touches[0].pageX - windowHalfX;
-                mouseY = e.touches[0].pageY - windowHalfY;
-            }
-        }
-
-        function onDocumentTouchMove(e) {
-
-            if (e.touches.length === 1) {
-
-                e.preventDefault();
-                mouseX = e.touches[0].pageX - windowHalfX;
-                mouseY = e.touches[0].pageY - windowHalfY;
-            }
-        }
 
 
         var i = 0;
@@ -200,19 +170,22 @@
         }
 
         function render() {
+
+            camera.position.x = (mouseX - camera.position.x) * 0.05;
+            camera.position.y = (-mouseY - camera.position.y) * 0.05;
+
             renderer.render(scene, camera);
         }
+
 
         initScene();
         animate();
 
-        var current = 0;
         document.body.addEventListener('click', function () {
             current++;
             current = current % gallery.length;
 
             scene.background = new THREE.Color(Math.random(), Math.random(), Math.random());
-
 
             geometry.vertices.forEach(function (particle, index) {
                 let tl = new TimelineMax();
@@ -220,8 +193,42 @@
 
             });
 
+            material.color.setRGB(Math.random(), Math.random(), Math.random());
+
+
 
         });
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onDocumentMouseMove(e) {
+            mouseX = e.clientX - windowHalfX;
+            mouseY = e.clientY - windowHalfY;
+        }
+
+        function onDocumentTouchStart(e) {
+
+            if (e.touches.length === 1) {
+
+                e.preventDefault();
+                mouseX = e.touches[0].pageX - windowHalfX;
+                mouseY = e.touches[0].pageY - windowHalfY;
+            }
+        }
+
+        function onDocumentTouchMove(e) {
+
+            if (e.touches.length === 1) {
+
+                e.preventDefault();
+                mouseX = e.touches[0].pageX - windowHalfX;
+                mouseY = e.touches[0].pageY - windowHalfY;
+            }
+        }
     })
 </script>
 
